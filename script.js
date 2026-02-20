@@ -43,32 +43,55 @@ const FX = {
 };
 
 // Convert using the base (USD) table: amount * (USD→to) / (USD→from)
-function convertManually(amount, from, to) {
+// function convertManually(amount, from, to) {
+//   if (from === to) return amount;
+
+//   const fromRate = FX[from];
+//   const toRate   = FX[to];
+
+//   if (typeof fromRate !== 'number' || typeof toRate !== 'number') {
+//     throw new Error(`Unsupported currency pair: ${from} → ${to}`);
+//   }
+//   return amount * (toRate / fromRate);
+// }
+
+// ===============================
+// ===== API CONVERSION ENABLED =====
+// ===============================
+ 
+// Currency Conversion via API (Frankfurter)
+async function convertViaAPI(amount, from, to) {
   if (from === to) return amount;
-
-  const fromRate = FX[from];
-  const toRate   = FX[to];
-
-  if (typeof fromRate !== 'number' || typeof toRate !== 'number') {
-    throw new Error(`Unsupported currency pair: ${from} → ${to}`);
+  const url = `https://api.frankfurter.app/latest?amount=${encodeURIComponent(
+    amount
+  )}&from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`;
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) throw new Error("Conversion API request failed");
+  const data = await res.json();
+  const converted = data?.rates?.[to];
+  if (typeof converted !== "number") {
+    throw new Error(`No rate found for ${from} → ${to}`);
   }
-  return amount * (toRate / fromRate);
+  return converted;
 }
-
-function updateOneRateManual(from, to) {
+ 
+// Show "1 FROM = X TO" live rate
+async function updateOneRate(from, to) {
+  const oneRateInfo = document.getElementById("rateInfo"); // Ensure this matches your HTML ID
   if (!oneRateInfo) return;
-
-  if (!from || !to) {
-    oneRateInfo.innerText = "";
-    return;
-  }
-  if (from === to) {
-    oneRateInfo.innerText = `1 ${from} = 1 ${to}`;
-    return;
-  }
+  if (!from || !to) { oneRateInfo.innerText = ""; return; }
+  if (from === to) { oneRateInfo.innerText = `1 ${from} = 1 ${to}`; return; }
+ 
   try {
-    const per1 = convertManually(1, from, to);
-    oneRateInfo.innerText = `1 ${from} = ${Number(per1).toLocaleString(undefined, {
+    const url = `https://api.frankfurter.app/latest?amount=1&from=${encodeURIComponent(
+      from
+    )}&to=${encodeURIComponent(to)}`;
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to fetch 1-unit rate");
+    const data = await res.json();
+    const val = data?.rates?.[to];
+    if (typeof val !== "number") throw new Error("Rate not available");
+    oneRateInfo.innerText = `1 ${from} = ${val.toLocaleString(undefined, {
       maximumFractionDigits: 6,
     })} ${to}`;
   } catch (e) {
@@ -76,6 +99,28 @@ function updateOneRateManual(from, to) {
     oneRateInfo.innerText = "";
   }
 }
+
+// function updateOneRateManual(from, to) {
+//   if (!oneRateInfo) return;
+
+//   if (!from || !to) {
+//     oneRateInfo.innerText = "";
+//     return;
+//   }
+//   if (from === to) {
+//     oneRateInfo.innerText = `1 ${from} = 1 ${to}`;
+//     return;
+//   }
+//   try {
+//     const per1 = convertManually(1, from, to);
+//     oneRateInfo.innerText = `1 ${from} = ${Number(per1).toLocaleString(undefined, {
+//       maximumFractionDigits: 6,
+//     })} ${to}`;
+//   } catch (e) {
+//     console.error(e);
+//     oneRateInfo.innerText = "";
+//   }
+// }
 // ===============================
 // Navigation Logic
 // ===============================
@@ -157,7 +202,7 @@ convertBtn.addEventListener('click', () => {
   }
 
   try {
-    const converted = convertManually(amount, from, to);
+    const converted = convertViaAPI(amount, from, to);
 
     rateInfo.innerText = `${amount} ${from} is approximately`;
     bigResult.innerText = `${converted.toLocaleString(undefined, { maximumFractionDigits: 6 })} ${to}`;
@@ -492,6 +537,7 @@ function toggleSidebar() {
   
   }
 }
+
 
 
 
