@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Currency Converter</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel = "icon" type = "image/png" href = "image.png">
+  <!-- Chart.js CDN for Trends page -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .muted { margin-top: .25rem; opacity: .75; font-size: .9rem; }
+  </style>
+</head>
+
+<body>
+
+  <!-- Splash screen -->
+<div id="splash-screen">
+  <div class="splash-content">
+    <h1>Currency Converter</h1>
+    <img src="logo.png" alt="Logo" class="splash-logo light-only">
+    <img src="logo-dark.png" alt="Logo" class="splash-logo dark-only">
+  </div>
+</div>
+<button class="menu-toggle" onclick="toggleSidebar()" >☰</button>
+
+  <aside class="sidebar">
+    <div class="logo">  
+    <img src="logo.png" alt="Group Logo" class="sidebar-img">
+    <!-- <button class="menu-close" onclick="toggleSidebar()">✖</button> -->
+  </div>
+    <ul>
+      <li class="active" onclick="showPage('converter')">Converter</li>
+      <li onclick="showPage('trends')">Trends</li>
+      <li onclick="showAboutPage('about')">About Us</li>
+    </ul>
+    <div class="mode-container">
+  <span id="themeLabel">Dark Mode</span>
+  <div class="toggle-wrapper" id="themeToggleContainer">
+    <div class="toggle-slider">
+      <div class="toggle-knob"></div>
+    </div>
+  </div>
+</div>
+  </aside>
+  <!-- Main Content -->
+  <main class="content">
+    <div class="main-content">
+  <header class="main-header">
+    <h1>Currency Converter</h1>
+    <div class="header-underline"></div>
+  </header>
+
+  <div id="converter" class="page">
+    </div>
+</div>
+<br>
+    <!-- Converter Page -->
+    <section id="converter-page" style="display: block;">
+      <div class="card">
+
+        <div class="selection-row">
+          <div class="input-group">
+            <label>From</label>
+            <div class="select-with-flag">
+              <img id="fromFlag" class="flag-img" alt="From flag" />
+              <select id="fromCurrency">
+                <option value="INR">India - INR</option>
+                <option value="USD">USA - USD</option>
+                <option value="GBP">UK - GBP</option>
+                <option value="JPY">Japan - JPY</option>
+                <option value="EUR">Europe - EUR</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Swap button (no auto-convert) -->
+          <div class="swap-col">
+            <button
+              id="swapBtn"
+              class="swap-btn"
+              type="button"
+              title="Swap currencies"
+            >↔</button>
+          </div>
+
+          <div class="input-group">
+            <label>To</label>
+            <div class="select-with-flag">
+              <img id="toFlag" class="flag-img" alt="To flag" />
+              <select id="toCurrency">
+                <option value="USD">USA - USD</option>
+                <option value="INR">India - INR</option>
+                <option value="GBP">UK - GBP</option>
+                <option value="JPY">Japan - JPY</option>
+                <option value="EUR">Europe - EUR</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Enter Amount</label>
+          <input type="number" id="amount" placeholder="Enter amount" />
+        </div>
+
+        <!-- Added class convert-btn -->
+        <!--<button id="convertBtn" class="convert-btn">Convert Currency</button>
+        <button id="clearBtn" class="clear-btn">Clear</button>-->
+
+        <div class="button-group">
+          <button id="convertBtn" class="convert-btn">Convert</button>
+          <button id="clearBtn" class="clear-btn">Clear</button>
+        </div>
+
+        <div class="result-display">
+          <div id="rateInfo"></div>
+          <div id="bigResult"></div>
+          <!-- 🆕 ADD THIS: live “1 FROM = X TO” line -->
+          <p id="oneRateInfo" class="muted" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <!-- Recent Conversions -->
+      <div class="card" style="margin-top: 24px;">
+        <h3>Recent Conversions</h3>
+        <ul id="historyList" class="history-list"></ul>
+      </div>
+    </section>
+
+    <!-- Trends Page -->
+    <section id="trends-page" style="display: none;">
+      <div class="card chart-card">
+        <div class="chart-header">
+          <h2></h2>
+          <div id="trendLabel" class="trend-label">—</div>
+        </div>
+        <canvas id="trendChart"></canvas>
+      </div>
+    </section>
+
+    <section id="about-page" style="display: none;">
+      <div class="team-container" id="team-grid">
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

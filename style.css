@@ -1,0 +1,582 @@
+:root {
+  --primary: #c40303;
+  --bg: #f8fafc;
+  --text: #050404;
+  --clr-surface-a0: #121212;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  display: flex;
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  background: #ffffff;
+  color: rgb(7, 7, 7);
+  padding: 20px;
+  position: sticky;
+  top: 0;
+  /*  Prevents the layout shift */
+  border-right: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+}
+.logo { font-size: 1.5rem; font-weight: bold; margin-bottom: 40px; color: #050505; }
+.sidebar ul { list-style: none; padding: 0; margin: 0; }
+.sidebar li {
+  padding: 12px; margin-bottom: 8px; border-radius: 8px; cursor: pointer; transition: 0.3s;
+}
+.sidebar li:hover, .sidebar li.active { background: var(--primary); color:#ffffff;}
+
+/* Main Content */
+.content { flex: 1; padding: 40px; }
+
+/* Full screen dim layer */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: white; /* Pure white background */
+  color: #050404;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Ensures it is above everything else */
+  transition: opacity 0.5s ease; /* Smooth fade out */
+}
+
+.splash-content {
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+}
+
+.splash-logo {
+  width: 150px; /* Adjust size as needed */
+  display: block;
+  margin: 10px auto 0;  /*Centers logo below heading */
+  
+}
+
+h1 {
+  font-size: 3rem;
+  font-family: 'Inter', sans-serif; /*consolas*/
+  color: #050505;
+  margin: 0;
+}
+
+
+
+.sidebar .logo {
+  display: flex;
+  justify-content: center; /* Centers the image horizontally */
+  align-items: center;    /* Centers the image vertically */
+  padding: 20px;          /* Adds breathing room around the logo */
+}
+
+.sidebar-img {
+  max-width: 90%;         /* Keeps it from touching the sidebar edges */
+  height: auto;           /* Maintains original proportions */
+  display: block;
+  border-radius: 4px;     /* Optional: slightly rounds the corners */
+}
+
+.main-header {
+  width: 100%;
+  padding: 50px 0 30px 0; /* Plenty of breathing room at the top */
+  display: flex;
+  flex-direction: column;
+  align-items: center;    /* Perfect horizontal centering */
+  justify-content: center;
+}
+
+.main-header h1 {
+  font-family: 'Inter', sans-serif; /**/
+  font-size: 2.8rem;      /* Bold, readable size */
+  font-weight: 800;       /* Extra bold for a modern look */
+  color: #1a1a1a;         /* Deep charcoal, not pure black */
+  margin: 0;
+  letter-spacing: -1px;   /* Tighter tracking for a high-end feel */
+  text-transform: capitalize;
+  text-align: center;
+}
+
+/* The stylish accent line below the text */
+.header-underline {
+  width: 60px;
+  height: 5px;
+  background: linear-gradient(90deg, #ff0000, #9e0303); /* Cool blue gradient */
+  border-radius: 10px;
+  margin-top: 10px;
+  transition: width 0.3s ease;
+}
+
+/* Subtle hover effect for the title */
+.main-header:hover .header-underline {
+  width: 100px;
+}
+
+/* Cards */
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  max-width: 900px;
+}
+
+/* Form controls */
+.selection-row { display: flex; gap: 20px; margin: 20px 0; align-items: end; }
+.input-group { display: flex; flex-direction: column; flex: 1; }
+label { font-size: 0.85rem; margin-bottom: 6px; color: #0a0a0a; }
+
+input, select {
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 1rem;
+  background: #fff;
+  color: #0b0b0b;
+}
+
+/* Swap button column */
+.swap-col {
+  display:flex;
+  align-items:flex-end;
+  padding-bottom: 0;
+}
+
+.swap-btn {
+  width:44px;
+  height:44px;
+  border:none;
+  border-radius:10px;
+  background:#c40303;        
+  color:#fff;
+  font-size:20px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition: transform .15s ease, filter .15s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+}
+.swap-btn:hover { transform: scale(1.05); filter: brightness(1.05); }
+.swap-btn:active { transform: scale(0.98); }
+
+/* Flags next to selects */
+.select-with-flag{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background: #f1f5f9;
+  padding:6px 10px;
+  border-radius:12px;
+}
+.flag-img{
+  width:22px;
+  height:16px;
+  object-fit:cover;
+  border-radius:2px;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+  background:#fff;
+}
+
+/* Result display */
+.result-display {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #e2e8f0;
+}
+#rateInfo { font-size: 0.95rem; color: #110101; }
+#bigResult {
+  font-size: 2.2rem;
+  margin: 6px 0 0 0;
+  color: #c40303;
+  font-weight: 800;
+}
+
+/* History list */
+.history-list { list-style: none; margin: 8px 0 0 0; padding: 0; }
+.history-list li{
+  display:flex; align-items:center; gap:8px;
+  padding: 6px 0;
+  border-bottom: 1px dashed #e2e8f0;
+}
+.inline-flag{
+  width:18px; height:13px; border-radius:2px; object-fit:cover;
+  background:#fff; box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+}
+
+/* Chart card */
+.chart-card { max-width: 900px; height: 420px; }
+.chart-header {
+  display:flex; justify-content:space-between; align-items:center; margin-bottom:12px
+}
+.trend-label { color:#c40303; font-weight:600; }
+
+/* Container to hold both buttons */
+.button-group {
+  display: flex;
+  gap: 12px;         /* Space between the buttons */
+  width: 100%;
+  margin-top: 10px;  /* Margin moved here for better layout */
+}
+
+/* Base style for both buttons to ensure they are equal size */
+.convert-btn, .clear-btn {
+  flex: 1;           /* Makes both buttons take up exactly 50% */
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+
+/* --- Convert Button (Red) --- */
+.convert-btn {
+  border: none;
+  color: #fff;
+  background: linear-gradient(45deg, #c20000ef, rgba(196, 3, 3, 0.943));
+  box-shadow: 0 6px 16px rgba(101, 19, 1, 0.5); /* Slightly softened shadow */
+}
+
+.convert-btn:hover {
+  transform: translateY(-1px) scale(1.02);
+  filter: brightness(1.1);
+}
+
+/* --- Clear Button (White) --- */
+.clear-btn {
+  border: 1px solid #ddd;
+  color: #444;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.clear-btn:hover {
+  transform: translateY(-1px) scale(1.02);
+  background: #fcfcfc;
+  color: #9e0303;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* Shared Active State */
+.convert-btn:active, .clear-btn:active {
+  transform: translateY(1px);
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+  .selection-row { flex-direction: column; align-items: stretch; }
+  .content { padding: 20px; }
+  .swap-col { justify-content:center; }
+}
+
+/* --- Dark Mode Core --- */
+body.dark-mode {
+  background-color: #121212; /* Surface a0 */
+  color: #ffffff;
+}
+
+/* Sidebar & Cards (Floating on the background) */
+body.dark-mode .sidebar {
+  background-color: #1e1e1e;
+  border-right: 1px solid #333333;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+}
+body.dark-mode .card {
+  background-color: #1e1e1e; /* Surface a10 */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+}
+
+/* Inputs & Selection Areas */
+body.dark-mode input, 
+body.dark-mode select,
+body.dark-mode .select-with-flag {
+  background-color: #2a2a2a; /* Surface a20 */
+  border: 1px solid #333333; /* Surface a30 */
+  color: #ffffff;
+}
+
+/* --- Dark Mode Typography Overrides --- */
+body.dark-mode h1, 
+body.dark-mode h2, 
+body.dark-mode h3, 
+body.dark-mode .logo,
+body.dark-mode label,
+body.dark-mode .sidebar li:not(.active) {
+  color: #ffffff !important;
+}
+
+/* Specifically for the Main Header and its underline */
+body.dark-mode .main-header h1 {
+  color: #ffffff;
+}
+
+/* Sidebar specifically */
+body.dark-mode .sidebar {
+  border-right: 1px solid #333333; /* Surface a30 */
+}
+
+/* Optional: Make the mode container border darker to match */
+body.dark-mode .mode-container {
+  border-top: 1px solid #333333;
+}
+
+/* --- Primary Actions (The Red) --- */
+.convert-btn, .swap-btn, .sidebar li.active {
+  background: #c40303; /* Primary */
+  color: #ffffff;
+}
+
+.convert-btn:hover {
+  background: #a50202; /* Darker Red for hover */
+}
+
+/* Result Text */
+body.dark-mode #bigResult {
+  color: #c40303; /* Matches primary brand */
+}
+
+body.dark-mode #rateInfo {
+  color: #94a3b8; /* Muted gray for secondary info */
+}
+/* Container at sidebar bottom */
+.mode-container {
+  margin-top: auto; 
+  padding: 20px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #e2e8f0;
+}
+
+#themeLabel {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #444;
+}
+
+/* The Sliding Track */
+.toggle-wrapper {
+  width: 50px;
+  height: 26px;
+  background-color: #cbd5e1; /* Off state color */
+  border-radius: 50px;
+  padding: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: relative;
+}
+
+/* The Knob */
+.toggle-knob {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Active State (When Dark Mode is ON) */
+body.dark-mode .toggle-wrapper {
+  background-color: var(--primary); /* Turns red */
+}
+
+body.dark-mode .toggle-knob {
+  transform: translateX(24px); /* Moves knob to the right */
+}
+
+/* Dark Mode Sidebar Label color */
+body.dark-mode #themeLabel {
+  color: #f8fafc;
+}
+
+/* --- Splash Screen Dark Mode Logic --- */
+
+/* 1. Ensure the container turns dark */
+body.dark-mode #splash-screen {
+  background-color: #121212;
+}
+
+/* 2. Hide the dark logo by default */
+.dark-only {
+  display: none;
+}
+
+/* 3. When Dark Mode is active: hide the light logo and show the dark one */
+body.dark-mode .light-only {
+  display: none !important;
+}
+
+body.dark-mode .dark-only {
+  display: block;
+  margin: 10px auto 0; /* Maintains your centering */
+}
+
+/* 4. Ensure header text remains white in dark mode */
+body.dark-mode #splash-screen h1 {
+  color: #ffffff;
+}
+
+
+/* --- About Us / Team Page Styles --- */
+/* Team Page Layout */
+.team-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  padding: 20px 0;
+}
+
+/* 3D Flip Card Effect */
+.card-container { perspective: 1200px; height: 350px; }
+.card-inner {
+  position: relative; width: 100%; height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+.card-container:hover .card-inner { transform: rotateY(180deg); }
+
+.card-front, .card-back {
+  position: absolute; width: 100%; height: 100%;
+  backface-visibility: hidden; border-radius: 16px;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center; padding: 25px;
+}
+
+/* Light Mode Card Styling */
+.card-front {
+  background: white;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+.card-front h3 { color: #c40303; font-size: 2rem; margin: 0; }
+.hover-text { color: #64748b; font-size: 0.8rem; margin-top: 15px; text-transform: uppercase; }
+
+/* Back of Card */
+.card-back {
+  background: linear-gradient(135deg, #c40303, #800000);
+  color: white; transform: rotateY(180deg);
+  text-align: center;
+}
+.card-back p { font-style: italic; font-size: 1.1rem; line-height: 1.6; }
+
+/* Dark Mode Overrides */
+body.dark-mode .card-front {
+  background-color: #1e1e1e;
+  border-color: #333;
+}
+
+/* Responsive adjustments */
+/* Base content area */
+.menu-toggle { display: none; }
+.menu-close{ display: none;}
+/* Tablet adjustments */
+@media (max-width: 1024px) {
+    .menu-toggle{
+    display: block;
+  }
+  .sidebar {
+    width: 200px;
+    padding: 15px;
+  }
+  .sidebar-img{
+    margin-top: 50px;
+  }
+
+  .content {
+    margin-left: 200px;
+  }
+
+  .sidebar li {
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+  .menu-toggle{
+    display: block;
+  }
+  .sidebar.active .menu-close{
+    display: block;
+  }
+}
+
+/* Mobile layout */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: -240px; /* hidden off-screen */
+    top: 0;
+    height: 100%;
+    transition: left 0.3s ease;
+    z-index: 999;
+  }
+
+  .sidebar.active {
+    left: 0; /* slide in when toggled */
+  }
+
+  .content {
+    margin-left: 0; /* no offset when sidebar is hidden */
+  }
+
+  .menu-toggle { display: block; 
+    position: absolute; 
+    top: 15px; 
+    left: 15px; 
+    color: black;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    z-index: 1000; }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .sidebar {
+    width: 180px;
+    padding: 10px;
+  }
+
+  .sidebar li {
+    font-size: 0.85rem;
+    padding: 8px;
+  }
+
+  .logo {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+  .menu-toggle{
+    display: block;
+  }
+}
