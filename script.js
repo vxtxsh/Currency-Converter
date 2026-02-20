@@ -207,7 +207,7 @@ convertBtn.addEventListener('click', () => {
     rateInfo.innerText = `${amount} ${from} is approximately`;
     bigResult.innerText = `${converted.toLocaleString(undefined, { maximumFractionDigits: 6 })} ${to}`;
 
-    addToHistory({ from, to, amount, converted: converted.toFixed(2) });
+    addToHistory({ from, to, amount, converted: Number(converted).toFixed(2) });
 
     const trendLabel = document.getElementById('trendLabel');
     if (trendLabel) trendLabel.innerText = `${from} to ${to}`;
@@ -537,6 +537,7 @@ function toggleSidebar() {
   
   }
 }
+
 
 
 
