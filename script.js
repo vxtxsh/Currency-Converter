@@ -76,44 +76,22 @@ async function convertViaAPI(amount, from, to) {
 }
  
 // Show "1 FROM = X TO" live rate
-async function updateOneRate(from, to) {
-  const oneRateInfo = document.getElementById("rateInfo"); // Ensure this matches your HTML ID
-  if (!oneRateInfo) return;
-  if (!from || !to) { oneRateInfo.innerText = ""; return; }
-  if (from === to) { oneRateInfo.innerText = `1 ${from} = 1 ${to}`; return; }
- 
-  try {
-    const url = `https://api.frankfurter.app/latest?amount=1&from=${encodeURIComponent(
-      from
-    )}&to=${encodeURIComponent(to)}`;
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to fetch 1-unit rate");
-    const data = await res.json();
-    const val = data?.rates?.[to];
-    if (typeof val !== "number") throw new Error("Rate not available");
-    oneRateInfo.innerText = `1 ${from} = ${val.toLocaleString(undefined, {
-      maximumFractionDigits: 6,
-    })} ${to}`;
-  } catch (e) {
-    console.error(e);
-    oneRateInfo.innerText = "";
-  }
-}
-
-// function updateOneRateManual(from, to) {
+// async function updateOneRate(from, to) {
+//   const oneRateInfo = document.getElementById("rateInfo"); // Ensure this matches your HTML ID
 //   if (!oneRateInfo) return;
-
-//   if (!from || !to) {
-//     oneRateInfo.innerText = "";
-//     return;
-//   }
-//   if (from === to) {
-//     oneRateInfo.innerText = `1 ${from} = 1 ${to}`;
-//     return;
-//   }
+//   if (!from || !to) { oneRateInfo.innerText = ""; return; }
+//   if (from === to) { oneRateInfo.innerText = `1 ${from} = 1 ${to}`; return; }
+ 
 //   try {
-//     const per1 = convertManually(1, from, to);
-//     oneRateInfo.innerText = `1 ${from} = ${Number(per1).toLocaleString(undefined, {
+//     const url = `https://api.frankfurter.app/latest?amount=1&from=${encodeURIComponent(
+//       from
+//     )}&to=${encodeURIComponent(to)}`;
+//     const res = await fetch(url, { cache: "no-store" });
+//     if (!res.ok) throw new Error("Failed to fetch 1-unit rate");
+//     const data = await res.json();
+//     const val = data?.rates?.[to];
+//     if (typeof val !== "number") throw new Error("Rate not available");
+//     oneRateInfo.innerText = `1 ${from} = ${val.toLocaleString(undefined, {
 //       maximumFractionDigits: 6,
 //     })} ${to}`;
 //   } catch (e) {
@@ -121,6 +99,28 @@ async function updateOneRate(from, to) {
 //     oneRateInfo.innerText = "";
 //   }
 // }
+
+function updateOneRateManual(from, to) {
+  if (!oneRateInfo) return;
+
+  if (!from || !to) {
+    oneRateInfo.innerText = "";
+    return;
+  }
+  if (from === to) {
+    oneRateInfo.innerText = `1 ${from} = 1 ${to}`;
+    return;
+  }
+  try {
+    const per1 = convertManually(1, from, to);
+    oneRateInfo.innerText = `1 ${from} = ${Number(per1).toLocaleString(undefined, {
+      maximumFractionDigits: 6,
+    })} ${to}`;
+  } catch (e) {
+    console.error(e);
+    oneRateInfo.innerText = "";
+  }
+}
 // ===============================
 // Navigation Logic
 // ===============================
@@ -537,6 +537,7 @@ function toggleSidebar() {
   
   }
 }
+
 
 
 
