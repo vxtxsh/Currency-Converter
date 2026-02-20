@@ -43,37 +43,37 @@ const FX = {
 };
 
 // Convert using the base (USD) table: amount * (USD→to) / (USD→from)
-// function convertManually(amount, from, to) {
-//   if (from === to) return amount;
+function convertManually(amount, from, to) {
+  if (from === to) return amount;
 
-//   const fromRate = FX[from];
-//   const toRate   = FX[to];
+  const fromRate = FX[from];
+  const toRate   = FX[to];
 
-//   if (typeof fromRate !== 'number' || typeof toRate !== 'number') {
-//     throw new Error(`Unsupported currency pair: ${from} → ${to}`);
-//   }
-//   return amount * (toRate / fromRate);
-// }
+  if (typeof fromRate !== 'number' || typeof toRate !== 'number') {
+    throw new Error(`Unsupported currency pair: ${from} → ${to}`);
+  }
+  return amount * (toRate / fromRate);
+}
 
 // ===============================
 // ===== API CONVERSION ENABLED =====
 // ===============================
  
 // Currency Conversion via API (Frankfurter)
-async function convertViaAPI(amount, from, to) {
-  if (from === to) return amount;
-  const url = `https://api.frankfurter.app/latest?amount=${encodeURIComponent(
-    amount
-  )}&from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`;
-  const res = await fetch(url, { cache: "no-store" });
-  if (!res.ok) throw new Error("Conversion API request failed");
-  const data = await res.json();
-  const converted = data?.rates?.[to];
-  if (typeof converted !== "number") {
-    throw new Error(`No rate found for ${from} → ${to}`);
-  }
-  return converted;
-}
+// async function convertViaAPI(amount, from, to) {
+//   if (from === to) return amount;
+//   const url = `https://api.frankfurter.app/latest?amount=${encodeURIComponent(
+//     amount
+//   )}&from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`;
+//   const res = await fetch(url, { cache: "no-store" });
+//   if (!res.ok) throw new Error("Conversion API request failed");
+//   const data = await res.json();
+//   const converted = data?.rates?.[to];
+//   if (typeof converted !== "number") {
+//     throw new Error(`No rate found for ${from} → ${to}`);
+//   }
+//   return converted;
+// }
  
 // Show "1 FROM = X TO" live rate
 // async function updateOneRate(from, to) {
@@ -202,12 +202,12 @@ convertBtn.addEventListener('click', () => {
   }
 
   try {
-    const converted = convertViaAPI(amount, from, to);
+    const converted = converManually(amount, from, to);
 
     rateInfo.innerText = `${amount} ${from} is approximately`;
     bigResult.innerText = `${converted.toLocaleString(undefined, { maximumFractionDigits: 6 })} ${to}`;
 
-    addToHistory({ from, to, amount, converted: Number(converted).toFixed(2) });
+    addToHistory({ from, to, amount, converted: converted.toFixed(2) });
 
     const trendLabel = document.getElementById('trendLabel');
     if (trendLabel) trendLabel.innerText = `${from} to ${to}`;
@@ -537,6 +537,7 @@ function toggleSidebar() {
   
   }
 }
+
 
 
 
