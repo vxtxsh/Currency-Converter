@@ -202,7 +202,7 @@ convertBtn.addEventListener('click', () => {
   }
 
   try {
-    const converted = converManually(amount, from, to);
+    const converted = convertManually(amount, from, to);
 
     rateInfo.innerText = `${amount} ${from} is approximately`;
     bigResult.innerText = `${converted.toLocaleString(undefined, { maximumFractionDigits: 6 })} ${to}`;
@@ -537,6 +537,7 @@ function toggleSidebar() {
   
   }
 }
+
 
 
 
