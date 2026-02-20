@@ -36,10 +36,10 @@ const MAX_HISTORY = 5; // change to 5 if you want exactly five
 const FX_BASE = 'USD';
 const FX = {
   USD: 1,
-  INR: 83.10,
-  GBP: 0.79,
-  JPY: 150.30,
-  EUR: 0.92
+  INR: 90.94,
+  GBP: 0.74,
+  JPY: 155.19,
+  EUR: 0.85
 };
 
 // Convert using the base (USD) table: amount * (USD→to) / (USD→from)
@@ -492,5 +492,6 @@ function toggleSidebar() {
   
   }
 }
+
 
 
